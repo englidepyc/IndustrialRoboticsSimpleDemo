@@ -1,0 +1,1 @@
+%General structure for inverse kinematic
