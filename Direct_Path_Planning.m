@@ -48,6 +48,7 @@ q_end = [pi/4 -pi/6 pi/3 -pi/4 pi/6 -pi/3]; % ending joint angles
 % Define time vector for trajectory
 t = linspace(0, 5, 100); % 100 points over 5 seconds
 
+
 % Generate trapezoidal trajectory
 [q, qd, qdd] = jtraj(q_start, q_end, t);
 
@@ -63,7 +64,7 @@ for i = 1:length(t)
     orientations(i, :) = rpy; % store orientation
 end
 
-% Plot joint space trajectories
+% Plotting q %
 figure;
 subplot(2,1,1);
 plot(t, q);
@@ -88,3 +89,10 @@ xlabel('X (m)');
 ylabel('Y (m)');
 zlabel('Z (m)');
 title('End-Effector Trajectory in 3D Space');
+
+%Plotting orientations (Plotting in 3d gives a similar graph to the "2d" plotting)
+figure;
+grid on;
+plot(t,orientations);
+legend('r','p','y');
+title('RPY over time');
