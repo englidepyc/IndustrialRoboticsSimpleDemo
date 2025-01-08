@@ -1,20 +1,32 @@
 %General structure for inverse kinematic
+clear all;
+close all;
 
-%define final position and orientation of Endeffector
+bot = create_bot();
+bot.plot([0 0 0 0 0 0]);  % Plot the robot in its home position
+hold on;  % Keep the robot plot active
+%chosen point (xyz) and making the rotation matrix
+plot3(10, -10, 10, 'ro', 'MarkerFaceColor', 'r');  % Red point in space
+hold off;
+
+% (10, -10, 10)
+Target_t = [eye(3),]
+
+%Compute the inverse kinematic of the chosen point
+
+
+%reach the computer ikine with jtraj or our trapezoid
+
+
+
+%%define final position and orientation of Endeffector
 %target_pos = [x, y, z];
 %target_rot = R; %rotational matrix
+%T_target = [target_rot, target pos'; 0, 0, 0, 1];
 
 %define starting joint configuration
 %q0 = [0 0 0 0 0 0];
 
-%create Robot
-%L1 = ...
-%...
-%L6 = ...
-
 
 %use numerical method to find the joint configuration
-%q_target = Robot.ikine(...);
-
-%Transformationmatrix
-%T =
+%q_target = Antropomorphic.ikine(T_target, q0);

@@ -46,8 +46,8 @@ L5 = Link('d', 0, 'a', 0, 'alpha', alpha5); % revolute 5
 L6 = Link('d', d6, 'a', 0, 'alpha', 0); % revolute 6
 
 % Create robot
-Antropomorphic1 = SerialLink([L1 L2 L3 L4 L5 L6], 'name', 'es.1');
-Antropomorphic1.base = Tbase;
+ourbot = SerialLink([L1 L2 L3 L4 L5 L6], 'name', 'es.1');
+ourbot.base = Tbase;
 
 % Define start and end positions in joint space
 q_start = [0 0 0 0 0 0]; % starting joint angles
@@ -72,7 +72,7 @@ end_effector_accelerations = zeros(length(t), 3); % store [ax, ay, az]
 % Compute forward kinematics, velocities, and accelerations at each point in trajectory
 for i = 1:length(t)
     % Get the forward kinematics for the current joint configuration
-    T = Antropomorphic1.fkine(q(i, :)); % forward kinematics
+    T = ourbot.fkine(q(i, :)); % forward kinematics
     positions(i, :) = transl(T); % extract position
     %rpy = tr2rpy(T); % extract roll-pitch-yaw orientation
     rpy = tr2rpy_own_try(T.T); %Own version of tr2rpy function, Since T is a Serial Link Element we have to extract only the transformationmatrix with T.T
@@ -80,7 +80,7 @@ for i = 1:length(t)
     orientations(i, :) = rpy; % store orientation
     
     % Jacobian for velocity calculation
-    J = Antropomorphic1.jacob0(q(i, :)); % Jacobian matrix
+    J = ourbot.jacob0(q(i, :)); % Jacobian matrix
     end_effector_velocities(i, :) = J(1:3, :) * qd(i, :)'; % velocity of end-effector
     
     % Acceleration calculation (using the Jacobian)
