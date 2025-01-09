@@ -1,13 +1,18 @@
-%Test Trapezodial - Triangular
-qstart = [0 0]
+%TEST  IF TRIANGULAR PROFILE WARNING IN trapezodial_trajectory.m WORKS
+
+% Define Input
+qstart = [0 0];
 qend = [1 3];
 t = 0:1/10:5;
 tf = 5;
-tc = 2.5;
+tc = 2.5; %if tc = tf/2 it should give out a warning
 
+% Call Function 
 [q, qd, qdd] = trapezoidal_trajectory(qstart, qend, t, tf, tc);
 
-%PLOTTING 
+
+% PLOTTING 
+
 % Position (q)
 subplot(3, 1, 1);
 plot(t, q(:, 1), 'r', 'LineWidth', 2); hold on;
