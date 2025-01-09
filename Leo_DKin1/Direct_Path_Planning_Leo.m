@@ -57,11 +57,16 @@ q_end = [pi/4 -pi/6 pi/3 -pi/4 pi/6 -pi/3]; % ending joint angles
 % Define time vector for trajectory
 t = 0:5/99:5; % 100 points over 5 seconds
 
+
+
 % Generate trapezoidal trajectory
 %[q, qd, qdd] = jtraj(q_start, q_end, t);
 
 %Test own trapez.-function
 [q, qd, qdd] = trapezoidal_trajectory(q_start, q_end, t,5,1); %5 Seconds max time, 1 Second acceleration time
+
+%Test if the warning about triangular trajectory works
+%[q, qd, qdd] = trapezoidal_trajectory(q_start, q_end, t,5,2.5);
 
 % Initialize arrays for forward kinematics
 positions = zeros(length(t), 3); % store [x, y, z]
