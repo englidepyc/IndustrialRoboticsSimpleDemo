@@ -11,10 +11,7 @@ d6 = 3;
 a2 = 8;
 
 % Define basic transformation
-Tbase = [1  0  0  0; 
-         0  1  0  0;
-         0  0  1  0;  
-         0  0  0  1];
+Tbase = eye(4);
 
 % Create the links
 L1 = Link('d', d1, 'a', 0, 'alpha', alpha1);  % revolute 1
@@ -25,7 +22,9 @@ L5 = Link('d', 0, 'a', 0, 'alpha', alpha5);   % revolute 5
 L6 = Link('d', d6, 'a', 0, 'alpha', 0);       % revolute 6
 
 % Create robot
-ourbot = SerialLink([L1 L2 L3 L4 L5 L6], 'name', 'es.1');
+ourbot = SerialLink([L1 L2 L3 L4 L5 L6], 'name', ' ');
 ourbot.base = Tbase;
 
 end
+
+
