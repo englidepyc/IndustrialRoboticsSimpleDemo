@@ -1,5 +1,5 @@
-function [q, qd, qdd] = trapezoidal_trajectory(q0, qf, t, tf, tc)
-
+function [q, qd, qdd] = trapezoidal_trajectory(q0, qf, t, tc)
+    
 % PARAMETER EXPLANATION
     % q0: Vector of initial positions (1 x n joints)
     % qf: Vector of final positions (1 x n joints)
@@ -10,7 +10,7 @@ function [q, qd, qdd] = trapezoidal_trajectory(q0, qf, t, tf, tc)
 % EXTRACT PARAMETERS FROM INPUT
     n = length(q0); % Number of joints
     m = length(t); % Number of time steps
- 
+    tf = max(t);
 % CHECK FOR TRIANGULAR OR TRAPEZODIAL PROFILE
      % If tf is smaller than 2*tc, the robot cannot reach the maximum
         % velocity

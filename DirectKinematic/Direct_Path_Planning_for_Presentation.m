@@ -12,10 +12,10 @@ q_end = [-pi pi/6 pi/3 -pi/4 pi/6 -pi/2]; % ending joint angles
 % Define time vector for trajectory
 t = 0:1/10:5; % 100 points over 5 seconds
 tf = 5; % final time
-tc = 1; % acceleration time
+tc = 3.0; % acceleration time
 
 % Creating trapzodial trajectory
-[q, qd, qdd] = trapezoidal_trajectory(q_start, q_end, t,tf,tc); 
+[q, qd, qdd] = trapezoidal_trajectory(q_start, q_end, t,tc); 
 
 % Initialize arrays for forward kinematics
 positions = zeros(length(t), 3); % store [x, y, z]
