@@ -6,6 +6,9 @@ target_q = zeros(1,6);
 target_T = zeros(4,4);
 pose = zeros(1,6);
 continue_entering = true;
+total_time = 0;
+acceleration_time = 0;
+
 %spawn robot
 bot = create_bot();
 
@@ -34,14 +37,18 @@ while ~pose_reachable
 end
 
 %SETTING UP THE JOINT TRAPEZOIDAL TRAJECTOR TO REACH THE POINT % can do interactively
-t = 0:1/10:5; %in 5 seconds with a resolution of a tenth of a second
-tf = 5;
-tc = 1; %trying the acceleration phase
-[q, qd, qdd] = trapezoidal_trajectory(current_q, target_q, t, tf, tc);
+total_time = input("Enter the total time to reach the point ");
+acceleration_time = input("Enter the acceleration time of the joint trapezoidal trajectory ");
+%resolution of a tenth of a second
+t = 0:1/10:total_time;
+tf = total_time;
+acceleration_time; %trying the acceleration phase
+[q, qd, qdd] = trapezoidal_trajectory(current_q, target_q, t, total_time, acceleration_time);
 
 % PLOTTING THE MOVEMENT OF THE END EFFECTOR ON THE JOINT TRAJECTORY
 plot3(pose(1,1),pose(1,2), pose(1,3), 'ro', 'MarkerFaceColor', 'r');
 bot.plot(q);
+current_q = target_q;
 
 choice = input("Enter q to quit, any key to continue ","s");
 if choice=='q'
@@ -50,7 +57,7 @@ end
     pose_reachable = false;
 end
 
-close all;
+close all; clear all;
 
 
 
