@@ -41,8 +41,6 @@ total_time = input("Enter the total time to reach the point ");
 acceleration_time = input("Enter the acceleration time of the joint trapezoidal trajectory ");
 %resolution of a tenth of a second
 t = 0:1/10:total_time;
-tf = total_time;
-acceleration_time; %trying the acceleration phase
 [q, qd, qdd] = trapezoidal_trajectory(current_q, target_q, t, total_time, acceleration_time);
 
 % PLOTTING THE MOVEMENT OF THE END EFFECTOR ON THE JOINT TRAJECTORY
