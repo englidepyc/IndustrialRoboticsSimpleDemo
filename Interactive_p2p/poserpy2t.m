@@ -32,7 +32,7 @@ Rz = [cos(yaw), -sin(yaw), 0;
 R = Rz * Ry * Rx;
 
 %Setting it into the homogeneus transformation matrix
-T(1:3,1:3) = R
+T(1:3,1:3) = R;
 
 
 end
