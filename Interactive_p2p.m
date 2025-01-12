@@ -1,8 +1,6 @@
-clear all; close all;       %Later: show axes of the configuration
-home = zeros(1,6);
+clear all; close all;       
+home = [0, 0, 0, 0, pi/2, 0];
 current_q = home;
-pose_reachable = false;
-target_q = zeros(1,6);
 target_T = zeros(4,4);
 pose = [10,10,10,0,0,0];
 continue_entering = true;
@@ -12,7 +10,8 @@ acceleration_time = 0;
 %spawn robot
 bot = create_bot();
 fk = bot.fkine(home);
-home_pose = [fk.a.',transform_tr2rpy(fk.T)]
+T = fk.T;
+home_pose = transl(T);
 
 %MAIN LOOP, KEEP ON ENTETING POINTS
 while continue_entering
@@ -25,27 +24,6 @@ while continue_entering
     bot.plot(q);
     current_q = home;
     end
-
-%input a pose
-% while ~pose_reachable
-% 
-%     pose = input_pose();
-%     target_T = poserpy2t(pose);
-%     %calculate the inverse kinematics
-%     try
-%         target_q = bot.ikine(target_T,'mask',ones(1,6));
-%     catch
-%         fprintf("inverse kinematics didn't work, try again \n");
-%     end
-% 
-%     %prompt user to try again if the point is outside of reachable
-%     %workspace
-%     if ~isempty(target_q)
-%         pose_reachable = true;
-%     else
-%         fprintf("Point is outside of reachable workspace, try again \n");
-%     end
-% end
 
 target_T = poserpy2t(pose);
 target_q = bot.ikine(target_T,'mask',ones(1,6));
