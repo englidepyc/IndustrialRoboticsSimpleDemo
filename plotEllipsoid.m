@@ -1,47 +1,50 @@
 function plotEllipsoid ()
-    %J = bot.jacob0(zeros(1,6));
-% Import the Robotics Toolbox
-% (Ensure it's installed and added to MATLAB path)
-
-% Define a simple 2-DOF robot using DH parameters
-L1 = Link([0 0 1 0], 'name', 'L1');
-L2 = Link([0 0 1 0], 'name', 'L2');
-robot = SerialLink([L1 L2], 'name', '2-DOF Robot');
-
-% Display the robot's home configuration
-robot.plot([0 0]);
-
-% Set the joint angles where you want to compute the manipulability
-q = [0, pi/2];  % Example joint configuration (in radians)
-
-% Compute the Jacobian matrix at the current joint configuration
-J = robot.jacob0(q);
-disp(rank(J))
-% Compute the manipulability matrix W = J * J'
-W = J * J';  % W is a positive semi-definite matrix
-
-% Perform Singular Value Decomposition (SVD) to get the singular values
-[U, S, V] = svd(W);
-
-% Get the singular values (diagonal of S)
-singular_values = diag(S);  % These are the singular values (scalars)
-
-% Create a unit sphere (for scaling purposes)
-[U_sphere, V_sphere] = sphere(20);  % Parametric sphere
-
-% Scale the unit sphere based on the singular values
-ellipsoid = U_sphere * singular_values(1) + V_sphere * singular_values(2);
-
-% Plot the manipulability ellipsoid
-figure;
-hold on;
-plot3(ellipsoid(1,:), ellipsoid(2,:), ellipsoid(3,:), 'r');
-title('Manipulability Ellipsoid');
-xlabel('X');
-ylabel('Y');
-zlabel('Z');
-axis equal;
-grid on;
-
+    % Initialize the Robotics Toolbox
+    clear; clc;
+    
+    % Define the 2-DOF planar arm
+    L1 = Link('d', 0, 'a', 1, 'alpha', 0);  % First link
+    L2 = Link('d', 0, 'a', 1, 'alpha', 0);  % Second link
+    
+    % Create the serial link robot
+    robot = SerialLink([L1 L2], 'name', '2-DOF Planar Arm');
+    
+    % Define a configuration for the robot
+    theta1 = pi/4;  % Joint angle 1
+    theta2 = pi/4;  % Joint angle 2
+    q = [theta1 theta2];  % Joint angles
+    
+    % Compute the Jacobian at the given configuration
+    J = robot.jacob0(q);  % Spatial Jacobian
+    
+    % Extract the linear velocity part (first two rows for a planar robot)
+    Jv = J(1:2, 1:2);
+    
+    % Compute the manipulability ellipsoid (based on the Jacobian)
+    W = Jv * Jv';  % Ellipsoid matrix
+    
+    % Generate points for the ellipsoid
+    theta = linspace(0, 2*pi, 100);  % Parameter for ellipse
+    ellipse_points = [cos(theta); sin(theta)];  % Unit circle
+    
+    % Transform unit circle using the square root of W
+    [v, d] = eig(W);  % Eigen-decomposition
+    ellipsoid_transformed = v * sqrt(d) * ellipse_points;
+    
+    % Plot the manipulability ellipsoid
+    figure;
+    hold on;
+    axis equal;
+    grid on;
+    
+    % Plot the ellipsoid
+    plot(ellipsoid_transformed(1, :), ellipsoid_transformed(2, :), 'r-', 'LineWidth', 2);
+    
+    % Add robot for reference
+    robot.plot(q, 'workspace', [-2 2 -2 2 -0.5 0.5]);
+    title('Manipulability Ellipsoid of a 2-DOF Planar Arm');
+    xlabel('X-axis');
+    ylabel('Y-axis');
+    hold off;
 
 end
