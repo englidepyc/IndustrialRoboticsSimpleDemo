@@ -29,6 +29,11 @@ ellipsoid_x_transformed = reshape(ellipsoid_points(:, 1), size(ellipsoid_x));
 ellipsoid_y_transformed = reshape(ellipsoid_points(:, 2), size(ellipsoid_y));
 ellipsoid_z_transformed = reshape(ellipsoid_points(:, 3), size(ellipsoid_z));
 
+% Translate the ellipsoid to the end-effector position
+ellipsoid_x_transformed = ellipsoid_x_transformed + Pe(1);
+ellipsoid_y_transformed = ellipsoid_y_transformed + Pe(2);
+ellipsoid_z_transformed = ellipsoid_z_transformed + Pe(3);
+
 % Plot the robot and the ellipsoid
 figure;
 hold on;
