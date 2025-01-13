@@ -6,11 +6,6 @@ function T = poserpy2t (pose)
     T = zeros(4,4); T(4,4) = 1;
     T(1:3,4) = position;
 
-    if abs(pitch) == pi/2
-        fprintf("Warning, the entered rpy values constitute a representation singularity\n");
-    end
-
-
 %Computing direct rotation matrix
 
 % Rotation about the X-axis (Roll)
