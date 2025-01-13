@@ -13,7 +13,7 @@ fk = bot.fkine(home);
 T = fk.T;
 home_pose = transl(T);
 
-%MAIN LOOP, KEEP ON ENTETING POINTS
+%MAIN LOOP, KEEP ON ENTERING SPEED AND ACCELERATION
 while continue_entering
     
     %return home

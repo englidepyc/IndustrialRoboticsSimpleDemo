@@ -1,17 +1,8 @@
-clear; clc;
+function plot_3d_ellipsoid_func (robot, q)
 
-robot = create_bot();
-
-% Define a configuration for the robot
-q = [0,0,0,0,pi/2,0];  % Joint angles
-
-%compute the end effector position
+J = robot.jacob0(q);
 Pe = transl(robot.fkine(q));
 
-% Compute the Jacobian at the given configuration
-J = robot.jacob0(q);  % Spatial Jacobian
-
-% Extract the translational part of the Jacobian
 Jv = J(1:3, 1:6);  % First three rows correspond to translational velocity
 
 % Compute the manipulability ellipsoid (based on the Jacobian)
@@ -58,3 +49,5 @@ ylabel('Y-axis');
 zlabel('Z-axis');
 title('Manipulability Ellipsoid of a 6-DOF Robot Arm');
 hold off;
+
+end
