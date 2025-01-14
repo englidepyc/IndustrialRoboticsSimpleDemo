@@ -3,7 +3,8 @@ clear; clc;
 robot = create_bot();
 
 % Define a configuration for the robot
-q = [0,0,0,0,pi/2,0];  % Joint angles
+q_1 = [-pi,pi/6,pi/3,-pi/4,pi/6,-pi/2];
+q = q_1;
 
 %compute the end effector position
 Pe = transl(robot.fkine(q));
@@ -11,31 +12,20 @@ Pe = transl(robot.fkine(q));
 % Compute the Jacobian at the given configuration
 J = robot.jacob0(q);  % Spatial Jacobian
 
-% Extract the translational part of the Jacobian
-Jv = J(1:3, 1:6);  % First three rows correspond to translational velocity
+% Extract Jv and Jo
+Jv = J(1:3, 1:6); 
+Jo = J(4:6, 1:6);
 
-% Compute the manipulability ellipsoid (based on the Jacobian)
-W = Jv * Jv';  % Ellipsoid matrix
+% Compute the manipulability matrix (based on the Jacobian)
+Wo = Jo * Jo';
+Wv = Jv * Jv';  
 
-% Generate points for the ellipsoid
-[U, D] = eig(W);  % Eigen-decomposition of W
-
-% Create the ellipsoid points
-[ellipsoid_x, ellipsoid_y, ellipsoid_z] = ellipsoid(0, 0, 0, sqrt(D(1,1)), sqrt(D(2,2)), sqrt(D(3,3)));
-
-% Transform the ellipsoid based on eigenvectors
-ellipsoid_points = [ellipsoid_x(:), ellipsoid_y(:), ellipsoid_z(:)] * U';
-ellipsoid_x_transformed = reshape(ellipsoid_points(:, 1), size(ellipsoid_x));
-ellipsoid_y_transformed = reshape(ellipsoid_points(:, 2), size(ellipsoid_y));
-ellipsoid_z_transformed = reshape(ellipsoid_points(:, 3), size(ellipsoid_z));
-
-% Translate the ellipsoid to the end-effector position
-ellipsoid_x_transformed = ellipsoid_x_transformed + Pe(1);
-ellipsoid_y_transformed = ellipsoid_y_transformed + Pe(2);
-ellipsoid_z_transformed = ellipsoid_z_transformed + Pe(3);
+% Calculate eigenvalues and vectors
+[Uv, Dv] = eig(Wv);
+[Uo, Do] = eig(Wo);
 
 %Display the w(q)
-w_q = sqrt(det(J*(J.'))); disp(w_q);
+w_q = sqrt(det(J*(J.'))); fprintf("The manipulability index w(q) is %d \n", w_q);
 
 % Plot the robot and the ellipsoid
 figure;
@@ -46,11 +36,10 @@ axis equal;
 % Plot the robot
 robot.plot(q);
 
-% Plot the manipulability ellipsoid
-surf(ellipsoid_x_transformed, ellipsoid_y_transformed, ellipsoid_z_transformed, ...
-    'FaceAlpha', 0.5, 'EdgeColor', 'none', 'FaceColor', 'r');
-%Plotting the fkine
-plot3(Pe(1), Pe(2), Pe(3),'ro', 'MarkerFaceColor', 'g');
+%Plot the ellipsoid
+create_and_plot_man_ellipsoid(Wv,Pe,'r');
+create_and_plot_man_ellipsoid(Wo,Pe,'g');
+
 
 % Label axes
 xlabel('X-axis');
