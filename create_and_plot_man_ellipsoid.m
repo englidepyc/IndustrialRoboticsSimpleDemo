@@ -3,7 +3,8 @@ function create_and_plot_man_ellipsoid (W, Pe, colour)
     [U, D] = eig(W);  % Eigen-decomposition of W
     
     % Create the ellipsoid points
-    [ellipsoid_x, ellipsoid_y, ellipsoid_z] = ellipsoid(0, 0, 0, sqrt(D(1,1)), sqrt(D(2,2)), sqrt(D(3,3)));
+    [ellipsoid_x, ellipsoid_y, ellipsoid_z] = ellipsoid(0, 0, 0, sqrt(D(1,1)), ...
+        sqrt(D(2,2)), sqrt(D(3,3)));
     
     % Transform the ellipsoid based on eigenvectors
     ellipsoid_points = [ellipsoid_x(:), ellipsoid_y(:), ellipsoid_z(:)] * U';
@@ -21,3 +22,7 @@ function create_and_plot_man_ellipsoid (W, Pe, colour)
         'FaceAlpha', 0.5, 'EdgeColor', 'none', 'FaceColor', colour);
     
 end
+
+
+
+

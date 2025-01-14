@@ -1,3 +1,4 @@
+%Transform a pose in operational space to a transformation matrix
 function T = poserpy2t (pose)
     roll = pose(1,4);
     pitch = pose(1,5);

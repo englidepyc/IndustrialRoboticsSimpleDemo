@@ -1,4 +1,7 @@
-clear all; close all;       
+% Clear Environment
+clear; close all;       
+
+% Initalize parameters  
 home = [0, 0, 0, 0, pi/2, 0];
 current_q = home;
 target_T = zeros(4,4);
@@ -7,7 +10,7 @@ continue_entering = true;
 total_time = 0;
 acceleration_time = 0;
 
-%spawn robot
+% Create robot
 bot = create_bot();
 fk = bot.fkine(home);
 T = fk.T;
@@ -19,8 +22,8 @@ while continue_entering
     %return home
     if current_q ~= home
     t = 0:1/10:8;
-    [q, qd, qdd] = trapezoidal_trajectory(current_q, home, t, 2);
-    plot3(home_pose(1),home_pose(2), home_pose(3), 'ro', 'MarkerFaceColor', 'g'); %dk why it doesn't plot
+    [q, ~, ~] = trapezoidal_trajectory(current_q, home, t, 2);
+    plot3(home_pose(1),home_pose(2), home_pose(3), 'ro', 'MarkerFaceColor', 'g'); 
     bot.plot(q);
     current_q = home;
     end
@@ -31,8 +34,7 @@ target_q = bot.ikine(target_T,'mask',ones(1,6));
 %SETTING UP THE JOINT TRAPEZOIDAL TRAJECTOR TO REACH THE POINT % can do interactively
 total_time = input("Enter the total time to reach the point ");
 acceleration_time = input("Enter the acceleration time of the joint trapezoidal trajectory ");
-%resolution of a tenth of a second
-t = 0:1/10:total_time;
+t = 0:1/10:total_time; % resolution of a tenth of a second
 [q, qd, qdd] = trapezoidal_trajectory(current_q, target_q, t, acceleration_time);
 
 % PLOTTING THE MOVEMENT OF THE END EFFECTOR ON THE JOINT TRAJECTORY
@@ -46,7 +48,11 @@ if choice=='q'; continue_entering = false; end
 pose_reachable = false;
 end
 
-close all; clear all;
+
+
+
+
+close all; clear;
 
 
 

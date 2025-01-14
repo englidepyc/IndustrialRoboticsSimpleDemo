@@ -1,14 +1,15 @@
-clear; close;
+clear all; close all;
 
+% Create robot
 robot = create_bot();
 
 % Define a configuration for the robot
 q_rotational_singularity = [0,0,0,0,0,0];
 q_boundary_singularity = [0,pi/2,pi/2,0,0,0]; %translational singularity
 q_nonsingular = [-pi,pi/6,pi/3,-pi/4,pi/6,-pi/2];
-q = q_nonsingular;
+q = q_boundary_singularity;
 
-%compute the end effector position
+% Compute the end effector position
 Pe = transl(robot.fkine(q));
 
 % Compute the Jacobian at the given configuration
@@ -33,10 +34,7 @@ so_x = sqrt(Do(1,1)); so_y = sqrt(Do(2,2)); so_z = sqrt(Do(3,3));
 
 fprintf("The manipulability index w(q) is: %d\n",w_q);
 fprintf("The singular values for σ₁ σ₂ σ₃ in translation are: %d, %d, %d\n",sv_x,sv_y,sv_z);
-fprintf("The singular values for σ₁ σ₂ σ₃ in translation are: %d, %d, %d\n",so_x,so_y,so_z);
-
-
-
+fprintf("The singular values for σ₁ σ₂ σ₃ in rotation are: %d, %d, %d\n",so_x,so_y,so_z);
 
 % Plot the robot and the ellipsoid
 figure;
@@ -61,3 +59,5 @@ title('Manipulability Ellipsoid of a 6-DOF Robot Arm');
 
 
 hold off;
+
+

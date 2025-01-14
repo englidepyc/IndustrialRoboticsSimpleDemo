@@ -1,6 +1,6 @@
 function [rpy] = transform_tr2rpy(T) %T = transformation matrix
 
-R = T(1:3,1:3); %Extracting only the rotation part
+R = T(1:3,1:3); % Extracting only the rotation part
 
 phi =  atan2(R(2, 1), R(1, 1)); 
 

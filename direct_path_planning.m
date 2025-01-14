@@ -10,16 +10,14 @@ q_start = [0 0 0 0 0 0]; % starting joint angles
 q_end = [-pi pi/6 pi/3 -pi/4 pi/6 -pi/2]; % ending joint angles
 
 % Define time vector for trajectory
-t = 0:1/10:5; % 100 points over 5 seconds
-tf = 5; % final time
+t = 0:1/10:5; 
 tc = 3.0; % acceleration time
 
 % Creating trapzodial trajectory
 [q, qd, qdd] = trapezoidal_trajectory(q_start, q_end, t,tc); 
 
-% Initialize arrays for forward kinematics
+% Initialize array for plotting the position
 positions = zeros(length(t), 3); % store [x, y, z]
-orientations = zeros(length(t), 3); % store [roll, pitch, yaw]
 
 % Create a figure for plotting
 figure;
@@ -45,10 +43,6 @@ for i = 1:length(t)
     T = bot.fkine(q(i, :)); % forward kinematics
     positions(i, :) = transl(T); % extract position (x y z)
 
-    rpy = transform_tr2rpy(T.T); % Custom tr2rpy function
-    % Since T is a Serial Link Element we have to extract only the transformationmatrix with T.T
-    orientations(i, :) = rpy; % store orientation (r p y)
-    
     % Plot the robot at the current joint configuration
     bot.plot(q(i, :)); 
     plot3(positions(i,1), positions(i,2), positions(i,3), '.r'); 
